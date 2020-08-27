@@ -1,0 +1,15 @@
+{
+  "name": "saga-discord-bot",
+  "version": "1.0.0",
+  "main": "saga-discord-bot.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node saga-discord-bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0",
+    "moment-timezone": "^0.5.31",
+    "winston": "^3.3.3"
+  }
+}
