@@ -1,6 +1,6 @@
 #!/bin/bash
 appname="saga-discord-bot"
-host=""
+host="kevin@127.0.0.1"
 echo $1 $2
 run() {
     echo "docker run \

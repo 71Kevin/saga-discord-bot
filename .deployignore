@@ -1,2 +1,7 @@
+.git
+.vagrant
+.idea
 node_modules
+npm-debug.log
+docs
 yarn.lock
