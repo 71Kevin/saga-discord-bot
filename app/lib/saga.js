@@ -15,13 +15,30 @@ const saga = {
                 })
                 logger.info('Saga Started');
             });
+
+            let statuses = [
+                {activity: {name: `+help`}, type: "PLAYING"}
+            ];
+            let i = 0;
+
+            setInterval(() => {
+                 let status = statuses[i];
+                 if(!status){
+                     status = statuses[0];
+                     i = 0;
+                 }
+                 client.user.setPresence(status);
+                 i++;
+                 logger.info('Successful attempt to change Presence');
+            }, 1000 * 60 * 60);
+
             client.on('message', message => {
                 if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
                 
                 const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/);
                 const command = args.shift().toLowerCase();
                 const taggedUser = message.mentions.users.first();
-                const random;
+                let random;
                 
                 if (command === 'ping') {
                     logger.info(`ping by ${message.author}`);

@@ -1,6 +1,5 @@
 FROM mhart/alpine-node:12
 
-RUN npm install pm2 -g
 RUN npm install --global yarn
 
 ADD package.json /saga-discord-bot/
