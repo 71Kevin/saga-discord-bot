@@ -1,6 +1,6 @@
+const logger = require('./logger');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const logger = require('./logger');
 
 const saga = {
     discord: async () => {
@@ -15,23 +15,23 @@ const saga = {
                 })
                 logger.info('Saga Started');
             });
-
+            
             let statuses = [
                 {activity: {name: `+help`}, type: "PLAYING"}
             ];
             let i = 0;
-
+            
             setInterval(() => {
-                 let status = statuses[i];
-                 if(!status){
-                     status = statuses[0];
-                     i = 0;
-                 }
-                 client.user.setPresence(status);
-                 i++;
-                 logger.info('Successful attempt to change Presence');
+                let status = statuses[i];
+                if(!status){
+                    status = statuses[0];
+                    i = 0;
+                }
+                client.user.setPresence(status);
+                i++;
+                logger.info('Successful attempt to change Presence');
             }, 1000 * 60 * 60);
-
+            
             client.on('message', message => {
                 if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
                 
@@ -45,7 +45,7 @@ const saga = {
                     message.channel.send('pong');
                 } else if (command === 'help') {
                     logger.info(`help by ${message.author}`);
-                    message.channel.send('Comandos básicos: \n\n +info saga \n +purge \n +cosmo @nome-do-usuário \n +quotes \n\n Bot feito por Kevin eu ae');
+                    message.channel.send('Comandos básicos: \n\n +info saga \n +purge número-de-mensagens \n +cosmo @nome-do-usuário \n +quotes \n +summon \n Bot feito por Kevin');
                 } else if (command === 'info') {
                     logger.info(`info by ${message.author}`);
                     if (!args.length) {
@@ -93,15 +93,21 @@ const saga = {
                         `FINALMENTE TUDO ACABOU E EU VENCI`
                     ];
                     random = Math.floor(Math.random() * quotes.length);
-
+                    
                     if (quotes[random] === `Zeus no Céu, Poseidon nos Oceanos e Hades no Mundo dos Mortos, tentaram conquistar esse mundo várias vezes durante os tempos mitológicos… Imagine se um deles, deuses tão poderosos, regesse o mundo?! Os seres humanos e a Terra seriam inevitavelmente destruídos por completo… E exatamente por este mundo estar um verdadeiro caos, ele precisa de um salvador para dominar e governá-lo e eu sou o mais qualificado para isto!`) {
                         message.channel.send(quotes[random], {files: ["app/image/saga-qualificado.gif"]});
                     } else if (quotes[random] === `FINALMENTE TUDO ACABOU E EU VENCI`) {
                         message.channel.send(quotes[random], {files: ["app/image/saga-risada.gif"]});
                     }
+                } else if (command === 'summon') {
+                    const channel = message.member.voice.channel;
+                    message.guild.members.cache.forEach(member => {
+                        if(member.id === message.member.id || !member.voice.channel) return;
+                        member.voice.setChannel(channel);
+                    });
+                    message.channel.send(`${message.author} invocou todos os usuários para o canal onde está! (͠≖ ͜ʖ͠≖)👌`);
                 }
             });
-            
             client.login(process.env.TOKEN);
         } catch (e) {
             logger.error(e.message);
