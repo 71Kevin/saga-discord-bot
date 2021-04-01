@@ -45,7 +45,7 @@ const saga = {
                     message.channel.send('pong');
                 } else if (command === 'help') {
                     logger.info(`help by ${message.author}`);
-                    message.channel.send('Comandos básicos: \n\n +info saga \n +purge número-de-mensagens \n +cosmo @nome-do-usuário \n +quotes \n +summon \n Bot feito por Kevin');
+                    message.channel.send('Comandos básicos: \n\n +info saga \n +purge número-de-mensagens \n +cosmo @nome-do-usuário \n +quotes \n +summon \n\n -Bot feito por Kevin');
                 } else if (command === 'info') {
                     logger.info(`info by ${message.author}`);
                     if (!args.length) {
