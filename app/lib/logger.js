@@ -11,7 +11,7 @@ const customFormat = winston.format.combine(
             level,
             message
         } = info;
-        
+
         const ts = moment().tz('America/Sao_Paulo').format('YYYY/MM/DD HH:mm:ss.SSS');
         return `${ts} [${level}]: ${message}`;
     }),
@@ -28,13 +28,13 @@ const winstonLogger = winston.createLogger({
 const logger = {
     error: (message, ...args) => {
         winstonLogger.error(message);
-    }, 
+    },
     warn: (message, ...args) => {
         winstonLogger.warn(message);
-    }, 
+    },
     info: (message, ...args) => {
         winstonLogger.info(message);
-    }, 
+    },
     debug: (message, ...args) => {
         winstonLogger.debug(message);
     }
