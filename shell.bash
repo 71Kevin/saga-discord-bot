@@ -1,7 +1,10 @@
 #!/bin/bash
 appname="saga-discord-bot"
 host="kevin@127.0.0.1"
+imageid="$(ssh $host docker images --filter=reference=$appname --format "{{.ID}}")"
+
 echo $1 $2
+
 run() {
     echo "docker run \
     		--log-opt max-size=50m	\
@@ -13,6 +16,10 @@ run() {
         -p 335:335 \
         -d \
         --restart=unless-stopped $appname"
+}
+
+clearImage() {
+    echo "docker rmi $imageid"
 }
 
 if [ $1 == "local" ]
@@ -27,21 +34,6 @@ if [ $1 == "local" ]
         docker stop $appname
         docker rm $appname
         eval $(run)
-    fi
-
-    if [ $2 == "stop" ]
-      then
-        docker stop $appname
-    fi
-
-    if [ $2 == "exec" ]
-      then
-        docker exec -it $appname $3
-    fi
-
-    if [ $2 == "start" ]
-      then
-        docker start $appname
     fi
 
     if [ $2 == "logs" ]
@@ -64,36 +56,11 @@ if [ $1 == "remote" ]
         ssh -tt $host "cd $appname && docker stop $appname"
         ssh -tt $host "cd $appname && docker rm $appname"
         ssh -tt $host "cd $appname && $(run)"
-    fi
-
-    if [ $2 == "stop" ]
-      then
-        ssh -tt $host "docker stop $appname"
-    fi
-
-    if [ $2 == "exec" ]
-      then
-        ssh -tt $host "docker exec -it $appname $3"
-    fi
-
-    if [ $2 == "start" ]
-      then
-        ssh -tt $host "cd $appname && docker start $appname"
-    fi
-
-
-    if [ $2 == "restart" ]
-      then
-        ssh -tt $host "cd $appname && docker restart $appname"
+        ssh -tt $host "docker rmi $(echo $imageid)"
     fi
 
     if [ $2 == "logs" ]
       then
         ssh -tt $host "docker logs -f $appname"
-    fi
-
-    if [ $2 == "env" ]
-      then
-        ssh -tt $host "docker exec -it $appname cat .env"
     fi
 fi
